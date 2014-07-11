@@ -1,5 +1,5 @@
 /*!
- * asset-loader.js 0.0.1
+ * asset-loader.js 0.0.2
  * https://github.com/Tom32i/asset-loader.js
  * Copyright 2014 Thomas JARRAND
  */
@@ -210,11 +210,11 @@ function SpriteAsset (source, columns, rows, callback, load)
     this.images = [];
     this.assets = [];
     this.loaded = 0;
-    this.total  = 0;
+
+    this.preLoaded  = this.preLoaded.bind(this);
+    this.partLoaded = this.partLoaded.bind(this);
 
     this.createImages();
-
-    console.log(load);
 
     if (typeof(load) != 'undefined' && load) {
         this.load();
@@ -240,7 +240,7 @@ SpriteAsset.prototype.createImages = function()
 {
     for (var row = 0; row < this.rows; row++) {
         for (var col = 0; col < this.columns; col++) {
-            var asset = new Asset(null, this.callback);
+            var asset = new Asset(null, this.partLoaded);
             this.assets.push({asset: asset, row: row, col: col});
             this.images.push(asset.getImage());
         }
@@ -274,6 +274,20 @@ SpriteAsset.prototype.preLoaded = function (e)
     }
 
     delete this.canvas;
+};
+
+/**
+ * On a sub image is loaded
+ *
+ * @param {Event} e
+ */
+SpriteAsset.prototype.partLoaded = function(e)
+{
+    this.loaded++;
+
+    if (this.loaded === this.images.length) {
+        this.callback.call();
+    }
 };
 
 /**
