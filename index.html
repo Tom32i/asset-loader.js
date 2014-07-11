@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>asset-loader.js</title>
+        <meta name="description" content="Simple HTML5 Input Key mapper">
+        <meta charset="utf-8">
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #container * {
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <script src="dist/asset-loader.js"></script>
+        <script type="text/javascript">
+            var container = document.getElementById('container');
+
+            var image = new Asset('jeff.jpg', function (e) {
+                console.log('Single image loaded');
+                container.appendChild(image.getImage());
+            });
+
+            var sprite = new SpriteAsset('jeff.jpg', 3, 2, function (e) {
+                console.log('Sprite loaded');
+                var images = sprite.getImages();
+
+                for (var i = images.length - 1; i >= 0; i--) {
+                    container.appendChild(images[i]);
+                }
+            });
+
+            image.load();
+            sprite.load();
+        </script>
+    </body>
+</html>
