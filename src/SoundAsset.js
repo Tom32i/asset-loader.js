@@ -3,8 +3,10 @@
  *
  * @param {String} source
  * @param {Function} callback
+ * @param {Boolean} load
+ * @param {Object} formats
  */
-function SoundAsset(source, callback, formats)
+function SoundAsset(source, callback, load, formats)
 {
     this.source  = source;
     this.element = new Audio();
@@ -14,6 +16,10 @@ function SoundAsset(source, callback, formats)
     this.element.addEventListener('canplaythrough', callback);
 
     this.attachSources();
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**

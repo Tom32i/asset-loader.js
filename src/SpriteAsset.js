@@ -5,8 +5,9 @@
  * @param {Number} columns
  * @param {Number} rows
  * @param {Function} callback
+ * @param {Boolean} load
  */
-function SpriteAsset (source, columns, rows, callback)
+function SpriteAsset (source, columns, rows, callback, load)
 {
     this.source   = source;
     this.columns  = columns;
@@ -22,6 +23,12 @@ function SpriteAsset (source, columns, rows, callback)
     this.total  = 0;
 
     this.createImages();
+
+    console.log(load);
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**
@@ -70,7 +77,7 @@ SpriteAsset.prototype.preLoaded = function (e)
         y         = assetData.row * this.height;
 
         this.canvas.clear();
-        this.canvas.drawImageFullFrom(this.source, x, y);
+        this.canvas.drawImageFromSource(this.source, x, y);
 
         asset.setSource(this.canvas.toString());
         asset.load();

@@ -3,20 +3,25 @@
  *
  * @param {string} source
  * @param {Function} callback
+ * @param {Boolean} load
  */
-function Asset(source, callback)
+function Asset(source, callback, load)
 {
     this.element = new Image();
     this.source  = source;
 
     this.element.asset = this;
     this.element.addEventListener('load', callback);
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**
  * Set source
  *
- * @param {string} source
+ * @param {String} source
  */
 Asset.prototype.setSource = function (source)
 {

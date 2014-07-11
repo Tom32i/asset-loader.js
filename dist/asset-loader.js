@@ -9,20 +9,25 @@
  *
  * @param {string} source
  * @param {Function} callback
+ * @param {Boolean} load
  */
-function Asset(source, callback)
+function Asset(source, callback, load)
 {
     this.element = new Image();
     this.source  = source;
 
     this.element.asset = this;
     this.element.addEventListener('load', callback);
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**
  * Set source
  *
- * @param {string} source
+ * @param {String} source
  */
 Asset.prototype.setSource = function (source)
 {
@@ -118,8 +123,10 @@ AssetCanvas.prototype.drawImageFromSource = function(image, x, y)
  *
  * @param {String} source
  * @param {Function} callback
+ * @param {Boolean} load
+ * @param {Object} formats
  */
-function SoundAsset(source, callback, formats)
+function SoundAsset(source, callback, load, formats)
 {
     this.source  = source;
     this.element = new Audio();
@@ -129,6 +136,10 @@ function SoundAsset(source, callback, formats)
     this.element.addEventListener('canplaythrough', callback);
 
     this.attachSources();
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**
@@ -184,8 +195,9 @@ SoundAsset.prototype.getAudio = function ()
  * @param {Number} columns
  * @param {Number} rows
  * @param {Function} callback
+ * @param {Boolean} load
  */
-function SpriteAsset (source, columns, rows, callback)
+function SpriteAsset (source, columns, rows, callback, load)
 {
     this.source   = source;
     this.columns  = columns;
@@ -201,6 +213,12 @@ function SpriteAsset (source, columns, rows, callback)
     this.total  = 0;
 
     this.createImages();
+
+    console.log(load);
+
+    if (typeof(load) != 'undefined' && load) {
+        this.load();
+    }
 }
 
 /**
@@ -249,7 +267,7 @@ SpriteAsset.prototype.preLoaded = function (e)
         y         = assetData.row * this.height;
 
         this.canvas.clear();
-        this.canvas.drawImageFullFrom(this.source, x, y);
+        this.canvas.drawImageFromSource(this.source, x, y);
 
         asset.setSource(this.canvas.toString());
         asset.load();
