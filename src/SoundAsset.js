@@ -1,70 +1,68 @@
 /**
  * Sound asset
- *
- * @param {String} source
- * @param {Function} callback
- * @param {Boolean} load
- * @param {Object} formats
  */
-function SoundAsset(source, callback, load, formats)
-{
-    this.source  = source;
-    this.element = new Audio();
-    this.formats = typeof(formats) != 'undefined' ? formats : this.formats;
+class SoundAsset {
+    /**
+     * Formats / Mime-Types
+     *
+     * @type {Object}
+     */
+    static formats = {
+        'mp3': 'audio/mpeg',
+        'ogg': 'audio/ogg'
+    }
 
-    this.element.asset = this;
-    this.element.addEventListener('canplaythrough', callback);
+    /**
+     * @param {String} source
+     * @param {Function} callback
+     * @param {Boolean} load
+     * @param {Object} formats
+     */
+    constructor(source, callback, load = false, formats = SoundAsset.formats) {
+        this.source = source;
+        this.formats = formats;
+        this.element = new Audio();
 
-    this.attachSources();
+        this.element.asset = this;
+        this.element.addEventListener('canplaythrough', callback);
 
-    if (typeof(load) != 'undefined' && load) {
-        this.load();
+        this.attachSources();
+
+        if (load) {
+            this.load();
+        }
+    }
+
+    /**
+     * Attach sources
+     */
+    attachSources() {
+        for (var format in this.formats) {
+            var source = document.createElement('source');
+            source.type = this.formats[format];
+            this.element.appendChild(source);
+        }
+    }
+
+    /**
+     * Load
+     */
+    load () {
+        document.body.appendChild(this.element);
+
+        this.formats.forEach((format, index) => {
+            this.element.childNodes[index].src = this.source + '.' + format;
+        });
+    }
+
+    /**
+     * Get the audio element
+     *
+     * @return {Element}
+     */
+    getAudio() {
+        return this.element;
     }
 }
 
-/**
- * Formats
- *
- * @type {Object}
- */
-SoundAsset.prototype.formats = {
-    'mp3': 'audio/mpeg',
-    'ogg': 'audio/ogg'
-};
-
-/**
- * Attach sources
- */
-SoundAsset.prototype.attachSources = function()
-{
-    for (var format in this.formats) {
-        var source = document.createElement('source');
-        source.type = this.formats[format];
-        this.element.appendChild(source);
-    }
-};
-
-/**
- * Load
- */
-SoundAsset.prototype.load = function ()
-{
-    document.body.appendChild(this.element);
-
-    var i = 0;
-
-    for (var format in this.formats) {
-        this.element.childNodes[i].src = this.source + '.' + format;
-        i++;
-    }
-};
-
-/**
- * Get the audio element
- *
- * @return {Element}
- */
-SoundAsset.prototype.getAudio = function ()
-{
-    return this.element;
-};
+export default SoundAsset;

@@ -1,67 +1,66 @@
 /**
  * Asset
- *
- * @param {string} source
- * @param {Function} callback
- * @param {Boolean} load
  */
-function Asset(source, callback, load)
-{
-    this.element = new Image();
-    this.source  = source;
+class Asset {
+    /**
+     * @param {string} source Source asset URL
+     * @param {Function} callback Success callback
+     * @param {Boolean} load Start loading on construction (default false)
+     */
+    constructor(source, callback, load = false) {
+        this.source = source;
+        this.element = new Image();
 
-    this.element.asset = this;
-    this.element.addEventListener('load', callback);
+        this.element.asset = this;
+        this.element.addEventListener('load', callback);
 
-    if (typeof(load) != 'undefined' && load) {
-        this.load();
+        if (load) {
+            this.load();
+        }
+    }
+
+    /**
+     * Set source
+     *
+     * @param {String} source
+     */
+    setSource(source) {
+        this.source = source;
+    }
+
+    /**
+     * Load
+     */
+    load() {
+        this.element.src = this.source;
+    }
+
+    /**
+     * Get image
+     *
+     * @return {Image}
+     */
+    getImage() {
+        return this.element;
+    }
+
+    /**
+     * Get image width
+     *
+     * @return {Number}
+     */
+    getWidth() {
+        return this.element.width;
+    }
+
+    /**
+     * Get image height
+     *
+     * @return {Number}
+     */
+    getHeight() {
+        return this.element.height;
     }
 }
 
-/**
- * Set source
- *
- * @param {String} source
- */
-Asset.prototype.setSource = function (source)
-{
-    this.source = source;
-};
-
-/**
- * Load
- */
-Asset.prototype.load = function ()
-{
-    this.element.src = this.source;
-};
-
-/**
- * Get image
- *
- * @return {Image}
- */
-Asset.prototype.getImage = function ()
-{
-    return this.element;
-};
-
-/**
- * Get image width
- *
- * @return {Number}
- */
-Asset.prototype.getWidth = function ()
-{
-    return this.element.width;
-};
-
-/**
- * Get image height
- *
- * @return {Number}
- */
-Asset.prototype.getHeight = function ()
-{
-    return this.element.height;
-};
+export default Asset;
