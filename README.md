@@ -1,35 +1,59 @@
-asset-loader.js
-===============
+tom32i-asset-loader.js
+======================
 
 Image, sprite, sound loader for HTML5 games.
 
 ## Install:
 
-    bower install --save tom32i-asset-loader.js
+    npm install --save tom32i-asset-loader.js
+
+### Import
+
+HTML:
+
+```html
+<script src="tom32i-asset-loader.js"></script>
+```
+
+ES6:
+
+```javascript
+import AssetLoader from 'tom32i-asset-loader.js';
+```
+
+Node:
+
+```javascript
+const AssetLoader = require('tom32i-asset-loader.js');
+```
+
 
 ## Usage:
 
-__Image:__
+### Asset
 
-To load a single image:
+_To load a single image_
 
-`var asset = new Asset(source, callback, load);`
+Arguments:
 
 * source: (String) The url of the image
 * callback: (Function) Callback called when the image is loaded
-* load: (Boolean) Start load imediately?
+* load: (Boolean) Start loading imediately? (default false)
+
+Example:
 
 ```javascript
-var image = new Asset('jeff.jpg', function (e) {
-    container.appendChild(image.getImage());
+const { Asset } = AssetLoader;
+const image = new Asset('jeff.jpg', (event) => {
+    document.appendChild(image.getImage());
 });
 ```
 
-__Sprite:__
+### SpriteAsset
 
-To load an image an split it into several images according to a grid:
+_To load an image an split it into several images according to a grid_
 
-`var asset = new SpriteAsset(url, columns, rows, callback, load);`
+Arguments:
 
 * source: (String) The url of the image
 * callback: (Function) Callback called when the image is loaded and splited
@@ -38,11 +62,21 @@ To load an image an split it into several images according to a grid:
 * load: (Boolean) Start load imediately?
 
 ```javascript
-var sprite = new SpriteAsset('jeff.jpg', 3, 2, function (e) {
-    var images = sprite.getImages();
-
-    for (var i = images.length - 1; i >= 0; i--) {
-        container.appendChild(images[i]);
-    }
+const sprite = new SpriteAsset('jeff.jpg', 3, 2, (event) => {
+    sprite.getImages().forEach((image) => document.appendChild(image));
 });
 ```
+
+# Contribute
+
+Clone the repository:
+
+    git clone git@github.com:Tom32i/asset-loader.js.git
+
+Install dev dependencies:
+
+    npm install
+
+Build dist:
+
+    npm run build

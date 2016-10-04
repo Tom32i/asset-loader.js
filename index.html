@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>tom32i-asset-loader.js</title>
+        <meta name="description" content="Simple asset loader">
+        <meta charset="utf-8">
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #container * {
+                margin: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <script src="dist/tom32i-asset-loader.js"></script>
+        <script>
+            const { Asset, SpriteAsset } = AssetLoader;
+            const container = document.getElementById('container');
+
+            const image = new Asset('jeff.jpg', (event) => {
+                console.log('Single image loaded');
+                container.appendChild(image.getImage());
+            });
+
+            const sprite = new SpriteAsset('jeff.jpg', 3, 2, (event) => {
+                console.log('Sprite loaded');
+                sprite.getImages().forEach((image) => container.appendChild(image));
+            });
+
+            image.load();
+            sprite.load();
+        </script>
+    </body>
+</html>
