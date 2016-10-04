@@ -62,6 +62,7 @@ Arguments:
 * load: (Boolean) Start load imediately?
 
 ```javascript
+const { SpriteAsset } = AssetLoader;
 const sprite = new SpriteAsset('jeff.jpg', 3, 2, (event) => {
     sprite.getImages().forEach((image) => document.appendChild(image));
 });
